@@ -1,42 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todoey/models/task.dart';
+import 'package:flutter_todoey/models/task_data.dart';
+import 'package:provider/provider.dart';
 
-class TaskTile extends StatefulWidget {
-  @override
-  _TaskTileState createState() => _TaskTileState();
-}
+class TaskTile extends StatelessWidget {
+  final bool isChecked;
+  final String taskTitle;
+  final Function checkboxCallback;
+  final Function longPressCallback;
 
-class _TaskTileState extends State<TaskTile> {
-  bool isChecked = true;
-
-
+  TaskTile({this.isChecked, this.taskTitle, this.checkboxCallback, this.longPressCallback});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('This is a task.',
-      style: TextStyle(decoration: isChecked? TextDecoration.lineThrough : null),),
-      trailing: TaskCheckbox(checkboxState: isChecked, toggleCheckboxState:(bool checkboxState){
-        setState(() {
-          isChecked = checkboxState;
-        });
-      }),
+      title: Text(
+        taskTitle,
+        style: TextStyle(
+            decoration: isChecked ? TextDecoration.lineThrough : null),
+      ),
+      trailing: Checkbox(
+        activeColor: Colors.lightBlueAccent,
+        value: isChecked,
+        onChanged: checkboxCallback,
+      ),
+      onLongPress: longPressCallback,
+
     );
   }
 }
-
-class TaskCheckbox extends StatelessWidget {
-  final bool checkboxState;
-  final Function toggleCheckboxState;
-
-  TaskCheckbox({this.checkboxState, this.toggleCheckboxState});
-
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      activeColor: Colors.lightBlueAccent,
-      value: checkboxState,
-      onChanged:toggleCheckboxState,
-    );
-  }
-}
-
